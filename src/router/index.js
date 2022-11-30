@@ -7,7 +7,8 @@ import RTL from "../views/Rtl.vue";
 import Profile from "../views/Profile.vue";
 import Signup from "../views/Signup.vue";
 import Signin from "../views/Signin.vue";
-import Book from "../views/Book.vue"
+import Books from "../views/Books.vue";
+import Book from "../views/Book.vue";
 
 const routes = [
   {
@@ -54,6 +55,11 @@ const routes = [
     path: "/signup",
     name: "Signup",
     component: Signup,
+  },
+  {
+    path: "/books",
+    name: "Books",
+    component: Books,
   },
   {
     path: "/book",
