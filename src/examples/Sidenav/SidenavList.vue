@@ -47,7 +47,7 @@
       <li class="nav-item">
         <sidenav-item
           url="/books"
-          :class="getRoute() === 'tables' ? 'active' : ''"
+          :class="getRoute() === 'livro' ? 'active' : ''"
           :navText="this.$store.state.isRTL ? 'الجداول' : 'Cadastro de Livros'"
         >
           <template v-slot:icon>
