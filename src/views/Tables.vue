@@ -150,7 +150,11 @@ export default {
   methods: {
     deleteUser(index) {
       axios
-        .delete("http://localhost:8888/users/" + this.users[index].id_usuario)
+        .delete("http://localhost:8888/users/" + this.users[index].id_usuario, {
+          headers: {
+            Authorization: 'Bearer ' + localStorage.getItem('token')
+          }
+        })
         .then(response => {
           console.log(response)
           window.location.reload();
@@ -161,7 +165,11 @@ export default {
     },
     alterUser() {
       axios
-        .patch("http://localhost:8888/users/" + this.editInput.id_usuario, this.editInput)
+        .patch("http://localhost:8888/users/" + this.editInput.id_usuario, this.editInput, {
+          headers: {
+            Authorization: 'Bearer ' + localStorage.getItem('token')
+          }
+        })
         .then(response => {
           console.log(response)
           this.closeModal = 'modal';
@@ -178,7 +186,11 @@ export default {
     },
     getUsers() {
       axios
-        .get("http://localhost:8888/users")
+        .get("http://localhost:8888/users", {
+          headers: {
+            Authorization: 'Bearer ' + localStorage.getItem('token')
+          }
+        })
         .then(response => {
           this.users = response.data.users
         })

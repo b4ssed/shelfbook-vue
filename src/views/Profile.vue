@@ -126,9 +126,12 @@ export default {
       this.edit = false;
     },
     alterProfile() {
-      console.log(this.profile.id_usuario, this.profile)
       axios
-        .patch("http://localhost:8888/users/" + this.profile.id_usuario, this.profile)
+        .patch("http://localhost:8888/users/" + this.profile.id_usuario, this.profile, {
+          headers: {
+            Authorization: 'Bearer ' + localStorage.getItem('token')
+          }
+        })
         .then(response => {
           console.log(response)
           this.edit = true;

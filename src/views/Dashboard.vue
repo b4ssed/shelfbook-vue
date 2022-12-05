@@ -66,7 +66,11 @@ export default {
   methods: {
     getBooks() {
       axios
-        .get("http://localhost:8888/books")
+        .get("http://localhost:8888/books", {
+          headers: {
+            Authorization: 'Bearer ' + localStorage.getItem('token')
+          }
+        })
         .then(response => {
           this.books = response.data.books
           console.log(this.books)

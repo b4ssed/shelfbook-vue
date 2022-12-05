@@ -209,7 +209,11 @@ export default {
     },
     deleteBook(index) {
       axios
-        .delete("http://localhost:8888/books/" + this.books[index].id_livro)
+        .delete("http://localhost:8888/books/" + this.books[index].id_livro, {
+          headers: {
+            Authorization: 'Bearer ' + localStorage.getItem('token')
+          }
+        })
         .then(response => {
           console.log(response)
           window.location.reload();
@@ -226,7 +230,11 @@ export default {
     },
     alterBook() {
       axios
-        .patch("http://localhost:8888/books/" + this.book.id_livro, this.book)
+        .patch("http://localhost:8888/books/" + this.book.id_livro, this.book, {
+          headers: {
+            Authorization: 'Bearer ' + localStorage.getItem('token')
+          }
+        })
         .then(response => {
           console.log(response)
           this.getBooks;
@@ -250,9 +258,12 @@ export default {
       this.getBooks();
     },
     createBook() {
-      console.log(this.book)
       axios
-        .post("http://localhost:8888/books", this.book)
+        .post("http://localhost:8888/books", this.book, {
+          headers: {
+            Authorization: 'Bearer ' + localStorage.getItem('token')
+          }
+        })
         .then(response => {
           console.log(response)
           this.book = {
@@ -273,7 +284,11 @@ export default {
     },
     getBooks() {
       axios
-        .get("http://localhost:8888/books")
+        .get("http://localhost:8888/books", {
+          headers: {
+            Authorization: 'Bearer ' + localStorage.getItem('token')
+          }
+        })
         .then(response => {
           this.books = response.data.books
         })
