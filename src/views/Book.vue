@@ -1,28 +1,28 @@
 <template>
   <div class="container-fluid">
     <div class="row">
-      <div class="col-lg-12">
+      <div v-for="(livro, index) in books" :key="livro.id_livro" class="col-lg-12">
+        <div v-if="teste">{{index}}</div>
         <div class="row mt-4">
           <div class="card min-height-400">
             <div class="card-body">
               <div class="row">
                 <div class="col-md-2">
-                  <img src="../assets/img/domcasmurro.jpg" alt="Image placeholder" class="card-img-top" width="250" height="400"/>
+                  <img :src="livro.caminho_arquivo" alt="Image placeholder" class="card-img-top" width="250" height="400"/>
                 </div>
-                <div class="col-md-2">
-                  <div class="mx-auto text-center mt-7">
+                <div class="col-md-10">
+                  <div class=" mt-7">
                     <h5>
-                      Mark Davis
-                      <span class="font-weight-light">, 35</span>
+                      {{livro.titulo}}
                     </h5>
                     <div class="h6 font-weight-300">
-                      <i class="ni location_pin mr-2"></i>Bucharest, Romania
+                      <i class="ni location_pin mr-2"></i>{{livro.autor}}
                     </div>
                     <div class="h6 mt-4">
-                      <i class="ni business_briefcase-24 mr-2"></i>Solution Manager - Creative Tim Officer
+                      {{livro.sinopse}}
                     </div>
                     <div>
-                      <i class="ni education_hat mr-2"></i>University of Computer Science
+                      <i class="ni education_hat mt-7 mr-2"></i>{{livro.editora}} - {{livro.ano}}
                     </div>
                   </div>
                 </div>
@@ -33,30 +33,19 @@
       </div>
     </div>
     <hr class="horizontal dark" />
-    <div class="row">
-      <div class="col-md-12">
-        <billing-card />
-      </div>
-    </div>
-    <div class="col-lg-4">
-        <invoice-card class="mt-4" />
-      </div>
   </div>
 </template>
 
 <script>
-import InvoiceCard from "./components/InvoiceCard.vue";
-import BillingCard from "./components/BillingCard.vue";
+import axios from "axios";
 
 
 export default {
   name: "Billing",
-  components: {
-    InvoiceCard,
-    BillingCard,
-  },
   data() {
     return {
+      teste: false,
+      books: [],
       salary: {
         classIcon: "text-white fas fa-landmark",
         title: "Salary",
@@ -71,5 +60,21 @@ export default {
       },
     };
   },
+  mounted() {
+    this.getBooks();
+  },
+  methods: {
+    getBooks() {
+      axios
+        .get("http://localhost:8888/books")
+        .then(response => {
+          this.books = response.data.books
+          console.log(this.books)
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    },
+  }
 };
 </script>

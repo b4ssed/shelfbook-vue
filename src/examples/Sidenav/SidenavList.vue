@@ -15,7 +15,7 @@
           </template>
         </sidenav-item>
       </li>
-      <li class="nav-item">
+      <li v-if="this.profile.isAdmin" class="nav-item">
         <sidenav-item
           url="/tables"
           :class="getRoute() === 'tables' ? 'active' : ''"
@@ -44,7 +44,7 @@
           FORMS
         </h6>
       </li>
-      <li class="nav-item">
+      <li v-if="this.profile.isAdmin" class="nav-item">
         <sidenav-item
           url="/books"
           :class="getRoute() === 'livro' ? 'active' : ''"
@@ -68,7 +68,7 @@
           </template>
         </sidenav-item>
       </li>
-      <li class="nav-item">
+      <li v-if="this.profile.isAdmin" class="nav-item">
         <sidenav-item
           url="/signin"
           :class="getRoute() === 'signin' ? 'active' : ''"
@@ -79,7 +79,7 @@
           </template>
         </sidenav-item>
       </li>
-      <li class="nav-item">
+      <li v-if="this.profile.isAdmin" class="nav-item">
         <sidenav-item
           url="/signup"
           :class="getRoute() === 'signup' ? 'active' : ''"
@@ -95,6 +95,7 @@
 </template>
 <script>
 import SidenavItem from "./SidenavItem.vue";
+import axios from "axios";
 
 export default {
   name: "SidenavList",
@@ -105,17 +106,36 @@ export default {
     return {
       title: "Argon Dashboard 2",
       controls: "dashboardsExamples",
-      isActive: "active"
+      isActive: "active",
+      profile: {}
     };
   },
   components: {
     SidenavItem,
   },
+  mounted() {
+    this.getLoggedUser();
+  },
   methods: {
     getRoute() {
       const routeArr = this.$route.path.split("/");
       return routeArr[1];
-    }
+    },
+    getLoggedUser() {
+      axios
+        .get("http://localhost:8888/profile", {
+          headers: {
+            Authorization: 'Bearer ' + localStorage.getItem('token')
+          }
+        })
+        .then(response => {
+          this.profile = response.data
+          console.log(this.profile)
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    },
   }
 };
 </script>

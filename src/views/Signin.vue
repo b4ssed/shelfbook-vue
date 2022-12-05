@@ -22,15 +22,13 @@
                   <p class="mb-0">Insira seu email e senha para entrar</p>
                 </div>
                 <div class="card-body">
-                  <form role="form">
+                  <form v-on:submit.prevent="login" role="form">
                     <div class="mb-3">
-                      <argon-input type="email" placeholder="Email" name="email" size="lg" />
+                      <input class="form-control" v-model="user.email" type="email" placeholder="Email" name="email" size="lg" />
                     </div>
                     <div class="mb-3">
-                      <argon-input type="password" placeholder="Senha" name="password" size="lg" />
+                      <input class="form-control" v-model="user.senha" type="password" placeholder="Senha" name="password" size="lg" />
                     </div>
-                    <argon-switch id="rememberMe">Lembrar de mim?</argon-switch>
-
                     <div class="text-center">
                       <argon-button
                         class="mt-4"
@@ -78,9 +76,10 @@
 </template>
 
 <script>
+
+import axios from "axios";
+
 import Navbar from "@/examples/PageLayout/Navbar.vue";
-import ArgonInput from "@/components/ArgonInput.vue";
-import ArgonSwitch from "@/components/ArgonSwitch.vue";
 import ArgonButton from "@/components/ArgonButton.vue";
 const body = document.getElementsByTagName("body")[0];
 
@@ -88,9 +87,29 @@ export default {
   name: "signin",
   components: {
     Navbar,
-    ArgonInput,
-    ArgonSwitch,
     ArgonButton,
+  },
+  data() {
+    return {
+      user: {
+        email: '',
+        senha: ''
+      }
+    }
+  },
+  methods: {
+    login() {
+      console.log(this.user)
+      axios
+        .post("http://localhost:8888/login", this.user)
+        .then(response => {
+          localStorage.setItem('token', response.data.token);
+          this.$router.push('/dashboard-default')
+        })
+        .catch((error) => {
+          console.log(error.message);
+        });
+    },
   },
   created() {
     this.$store.state.hideConfigButton = true;
